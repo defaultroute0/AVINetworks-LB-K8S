@@ -1,0 +1,15 @@
+ kubectl apply -n app -f https://raw.githubusercontent.com/GoogleCloudPlatform/microservices-demo/master/release/kubernetes-manifests.yaml
+ kubectl apply -n app -f kubernetes-manifests.yaml
+ kubectl apply -n app -f kubernetes-manifests-withingress.yaml
+
+ helm install ako/ako --generate-name --version 1.2.3 -f values.yaml --namespace=avi-system
+
+Removing AKO
+kubectl delete cm avi-k8s-config -n avi-system
+helm delete $(helm list -n avi-system -q) -n avi-system
+
+Restarting AKO
+kubectl delete pod ako-0 -n avi-system
+
+Logs
+kubectl logs ako-0 -n avi-system | more
